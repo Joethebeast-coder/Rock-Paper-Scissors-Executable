@@ -8,6 +8,13 @@
 <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
+<py-config>
+{
+  "terminal": "terminal",
+  "packages": []
+}
+</py-config>
+
 <style>
     body {
         margin: 0;
@@ -72,12 +79,15 @@
         background: #2ea043;
     }
 
-    py-terminal {
+    #terminal {
         margin-top: 25px;
         height: 400px;
         background: #11151c;
         border-radius: 10px;
         padding: 10px;
+        color: #c9d1d9;
+        font-family: Consolas, monospace;
+        overflow-y: auto;
     }
 </style>
 </head>
@@ -138,24 +148,21 @@ while True:
         print("DONT DO THAT")</pre>
     </div>
 
-    <button id="run-btn">Run Game</button>
+    <button py-click="run_game()">Run Game</button>
 
-    <py-terminal id="terminal"></py-terminal>
+    <div id="terminal"></div>
 
     <py-script>
 from js import document
-import random, sys
+import random
 
-# Clear terminal before each run
 def clear_terminal():
     term = document.getElementById("terminal")
     term.innerHTML = ""
 
-
-def run_game(event):
+def run_game():
     clear_terminal()
 
-    # Your original code EXACTLY as-is:
     import random
 
     while True:
@@ -205,9 +212,6 @@ def run_game(event):
             print("DONT DO THAT")
         except NameError:
             print("DONT DO THAT")
-
-
-document.getElementById("run-btn").addEventListener("click", run_game)
     </py-script>
 
 </div>
