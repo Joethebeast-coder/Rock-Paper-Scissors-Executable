@@ -4,16 +4,8 @@
 <meta charset="UTF-8">
 <title>Rock Paper Scissors</title>
 
-<!-- PyScript -->
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<script defer src="https://pyscript.net/latest/pyscript.js"></script>
-
-<py-config>
-{
-  "terminal": "terminal",
-  "packages": []
-}
-</py-config>
+<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+<script defer src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
 <style>
     body {
@@ -88,6 +80,7 @@
         color: #c9d1d9;
         font-family: Consolas, monospace;
         overflow-y: auto;
+        white-space: pre-wrap;
     }
 </style>
 </head>
@@ -148,7 +141,7 @@ while True:
         print("DONT DO THAT")</pre>
     </div>
 
-    <button py-click="run_game()">Run Game</button>
+    <button id="run-btn">Run Game</button>
 
     <div id="terminal"></div>
 
@@ -156,13 +149,28 @@ while True:
 from js import document
 import random
 
-def clear_terminal():
-    term = document.getElementById("terminal")
-    term.innerHTML = ""
+terminal = document.getElementById("terminal")
 
-def run_game():
-    clear_terminal()
+def write(text):
+    terminal.innerHTML += text + "\n"
+    terminal.scrollTop = terminal.scrollHeight
 
+def clear():
+    terminal.innerHTML = ""
+
+def run_game(event):
+    clear()
+
+    # redirect print()
+    import builtins
+    builtins.print = write
+
+    # redirect input()
+    def browser_input(prompt=""):
+        return document.window.prompt(prompt)
+    builtins.input = browser_input
+
+    # your original code EXACTLY as-is
     import random
 
     while True:
@@ -206,12 +214,11 @@ def run_game():
             else:
                 print("DONT DO THAT")
             input("PRESS ENTER TO CONTINUE")
-            for i in range(1,10000):
-                print("[CLEARING OUTPUT] [CLEARING OUTPUT] [CLEARING OUTPUT] [CLEARING OUTPUT] [CLEARING OUTPUT] [CLEARING OUTPUT] [CLEARING OUTPUT]")
-        except ValueError:
+            clear()
+        except:
             print("DONT DO THAT")
-        except NameError:
-            print("DONT DO THAT")
+
+document.getElementById("run-btn").addEventListener("click", run_game)
     </py-script>
 
 </div>
